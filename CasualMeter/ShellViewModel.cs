@@ -125,6 +125,12 @@ namespace CasualMeter
             }
         }
 
+        public bool AutosaveEncounters
+        {
+            get { return GetProperty(getDefault: () => SettingsHelper.Instance.Settings.AutosaveEncounters); }
+            set { SetProperty(value, onChanged: e => SettingsHelper.Instance.Settings.AutosaveEncounters = value); }
+        }
+
         public bool ShowCompactView => UseCompactView || (SettingsHelper.Instance.Settings.ExpandedViewPlayerLimit > 0 
                                                           && PlayerCount > SettingsHelper.Instance.Settings.ExpandedViewPlayerLimit);
 
@@ -252,8 +258,9 @@ namespace CasualMeter
         {
             if (Server == null) return;
 
-            if (message != null && message.ShouldSaveCurrent && !DamageTracker.IsArchived && 
-                DamageTracker.StatsByUser.Count > 0 && DamageTracker.FirstAttack != null && DamageTracker.LastAttack != null)
+            bool saveEncounter = AutosaveEncounters || (message != null && message.ShouldSaveCurrent);
+            if (saveEncounter && !DamageTracker.IsArchived && DamageTracker.StatsByUser.Count > 0 &&
+                DamageTracker.FirstAttack != null && DamageTracker.LastAttack != null)
             {
                 DamageTracker.IsArchived = true;
                 ArchivedDamageTrackers.Add(DamageTracker);
