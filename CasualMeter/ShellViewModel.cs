@@ -259,7 +259,7 @@ namespace CasualMeter
             if (Server == null) return;
 
             bool saveEncounter = AutosaveEncounters || (message != null && message.ShouldSaveCurrent);
-            if (saveEncounter && !DamageTracker.IsArchived && DamageTracker.StatsByUser.Count > 0 &&
+            if (saveEncounter && DamageTracker != null && !DamageTracker.IsArchived && DamageTracker.StatsByUser.Count > 0 &&
                 DamageTracker.FirstAttack != null && DamageTracker.LastAttack != null)
             {
                 DamageTracker.IsArchived = true;
